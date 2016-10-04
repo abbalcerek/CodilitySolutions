@@ -1,64 +1,54 @@
 package org.blah.codility.prefixsums;
 
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by adam on 03.10.16.
  */
 public class GenomicRangeQuery {
 
-    Map<Character, Integer> impacts = new HashMap<>();
-
     public int[] solution(String S, int[] P, int[] Q) {
-        initImpacts();
-        int[] leftMin = initLeftMin(S);
-        int[] rightMin = initRightMin(S);
+        int[] oncCounts = initCounts(S, 'A');
+        int[] twoCounts = initCounts(S, 'C');
+        int[] treeCounts = initCounts(S, 'G');
 
         int[] result = new int[P.length];
 
         for (int i = 0; i < P.length; i++) {
             int first = P[i];
             int second = Q[i];
-
+            if (contains(first, second, oncCounts)) {
+                result[i] = 1;
+            } else if (contains(first, second, twoCounts)) {
+                result[i] = 2;
+            } else if (contains(first, second, treeCounts)) {
+                result[i] = 3;
+            } else {
+                result[i] = 4;
+            }
         }
 
-        return null;
+        return result;
     }
 
-    private void initImpacts() {
-        impacts.put('A', 1);
-        impacts.put('C', 2);
-        impacts.put('G', 3);
-        impacts.put('T', 4);
-    }
-
-    private int[] initLeftMin(String s) {
-        int[] result = new int[s.length()];
-        int min = 4;
-        for (int i = 0; i < s.length(); i++) {
-            char character = s.charAt(i);
-            min = min(min, impacts.get(character));
-            result[i] = min;
+    private boolean contains(int first, int second, int[] counts) {
+        boolean result = false;
+        if (first == 0) {
+            result = counts[second] > 0;
+        } else {
+            result = counts[second] > counts[first - 1];
         }
         return result;
     }
 
-    private int[] initRightMin(String s) {
-        int[] result = new int[s.length()];
-        int min = 4;
-        for (int i = s.length() - 1; i >= 0; i--) {
-            char character = s.charAt(i);
-            min = min(min, impacts.get(character));
-            result[i] = min;
-        }
-        return result;
-    }
-
-    private int min(int n, int m) {
-        int result = n;
-        if (m < n) {
-            result = m;
+    private int[] initCounts(String S, char character) {
+        int[] result = new int[S.length()];
+        int previous = 0;
+        for (int i = 0; i < S.length(); i++) {
+            char c = S.charAt(i);
+            if (c == character) {
+                previous += 1;
+            }
+            result[i] = previous;
         }
         return result;
     }
