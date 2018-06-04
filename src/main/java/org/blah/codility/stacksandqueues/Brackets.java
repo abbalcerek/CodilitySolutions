@@ -50,8 +50,7 @@ public class Brackets {
     }
 
     public static void main(String... args) {
-        String arg = "({[]})";
-        System.out.println(new Brackets().solution(arg));
+
     }
 
 
