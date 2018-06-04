@@ -20,16 +20,22 @@ public class Brackets {
     public int solution(String S) {
         Stack<Character> stack = new Stack<Character>();
 
-        stack.push(S.charAt(0));
-        for (int i = 1; i < S.length(); i++){
+        for (int i = 0; i < S.length(); i++){
             char c = S.charAt(i);
 
-            char top = stack.peek();
-            if (left(c) == left(top)) stack.push(c);
-            else if (type(c) == type(top)) stack.pop();
-            else return 0;
+            if (stack.empty())
+                stack.push(c);
+            else {
+                char top = stack.peek();
+                if (left(c) && left(top)) stack.push(c);
+                else if (type(c) == type(top)) {
+                    if (left(top) && !left(c)) stack.pop();
+                    else return 0;
+                }
+            }
         }
-        return 1;
+        if (stack.isEmpty()) return 1;
+        else return 0;
     }
 
     private short type(char c) {
@@ -47,10 +53,6 @@ public class Brackets {
         } else {
             throw new IllegalArgumentException();
         }
-    }
-
-    public static void main(String... args) {
-
     }
 
 
