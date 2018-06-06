@@ -7,6 +7,8 @@ import java.util.Stack;
  */
 public class Brackets {
 
+    //todo: do this in constant storage complexity
+
     static private char pCurly = '}';
     static private char lCurly = '{';
 
