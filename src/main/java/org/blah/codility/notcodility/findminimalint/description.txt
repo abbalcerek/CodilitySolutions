@@ -1,0 +1,9 @@
+input:
+int array A of size N
+
+output:
+minimal positive int not contained in A
+
+complexity:
+time complexity o(n)
+space complexity o(1) (input table can be mutated)
